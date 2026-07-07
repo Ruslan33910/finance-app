@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2d6cdf">
+  <title>Мои финансы — учёт денег без лишнего</title>
+  <link rel="icon" href="app/icons/icon-192.png">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: linear-gradient(160deg, #2d6cdf 0%, #1e4fa8 100%);
+      color: #fff; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 40px 20px;
+    }
+    .wrap { max-width: 460px; width: 100%; text-align: center; }
+    .logo {
+      width: 88px; height: 88px; border-radius: 22px;
+      background: rgba(255,255,255,.15); display: grid; place-items: center;
+      font-size: 46px; margin: 0 auto 22px; backdrop-filter: blur(4px);
+    }
+    h1 { font-size: 28px; margin-bottom: 10px; }
+    .lead { font-size: 16px; opacity: .9; line-height: 1.5; margin-bottom: 26px; }
+    .btn {
+      display: block; width: 100%; background: #fff; color: #2d6cdf;
+      text-decoration: none; padding: 16px; border-radius: 14px;
+      font-size: 17px; font-weight: 700; margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+    .btn.secondary { background: rgba(255,255,255,.15); color: #fff; box-shadow: none; }
+    .features {
+      background: rgba(255,255,255,.1); border-radius: 16px;
+      padding: 20px; margin: 28px 0; text-align: left;
+    }
+    .features li { list-style: none; padding: 8px 0; display: flex; gap: 12px; align-items: center; font-size: 15px; }
+    .features li .e { font-size: 20px; }
+    .how {
+      background: rgba(0,0,0,.12); border-radius: 16px; padding: 18px 20px; text-align: left;
+    }
+    .how h3 { font-size: 15px; margin-bottom: 10px; }
+    .how p { font-size: 14px; opacity: .92; line-height: 1.5; margin-bottom: 6px; }
+    .note { font-size: 12px; opacity: .7; margin-top: 22px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="logo">₽</div>
+    <h1>Мои финансы</h1>
+    <p class="lead">Простой учёт доходов и расходов. Категории, лимиты, цели и наглядные отчёты. Работает без интернета, данные — только на вашем телефоне.</p>
+
+    <a class="btn" href="app/index.html">Открыть приложение</a>
+    <a class="btn secondary" href="app/index.html">Установить на телефон</a>
+
+    <ul class="features">
+      <li><span class="e">⚡</span> Быстрый ввод трат в пару касаний</li>
+      <li><span class="e">📊</span> Отчёт: куда уходят деньги</li>
+      <li><span class="e">🎯</span> Лимиты по категориям и цели накопления</li>
+      <li><span class="e">📴</span> Работает офлайн, ставится как приложение</li>
+      <li><span class="e">🔒</span> Данные хранятся только у вас на устройстве</li>
+    </ul>
+
+    <div class="how">
+      <h3>Как установить</h3>
+      <p><b>Android (Chrome):</b> откройте приложение → меню «⋮» → «Установить приложение».</p>
+      <p><b>iPhone (Safari):</b> откройте приложение → «Поделиться» → «На экран Домой».</p>
+      <p><b>Компьютер:</b> в адресной строке нажмите значок установки.</p>
+    </div>
+
+    <p class="note">Бесплатно. Без регистрации. Приложение не собирает и не отправляет ваши данные — всё остаётся на вашем устройстве.</p>
+  </div>
+</body>
+</html>

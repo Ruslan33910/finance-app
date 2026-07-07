@@ -1,0 +1,148 @@
+/* --- Базовые стили, мобильный вид --- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1a1f36;
+  --muted: #8a90a2;
+  --brand: #2d6cdf;
+  --income: #23a06b;
+  --expense: #e5484d;
+  --line: #eaecf2;
+}
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding-bottom: 76px; /* место под нижнее меню */
+}
+.hidden { display: none !important; }
+
+/* --- Шапка --- */
+header {
+  background: var(--brand);
+  color: #fff;
+  padding: 18px 18px 22px;
+}
+header .title { font-size: 15px; opacity: .85; }
+header .balance { font-size: 32px; font-weight: 700; margin-top: 2px; }
+header .sub {
+  display: flex; gap: 16px; margin-top: 12px; font-size: 13px;
+}
+header .sub b { display: block; font-size: 16px; }
+header .sub .inc { color: #b8f0d6; }
+header .sub .exp { color: #ffc9cb; }
+
+/* --- Контент --- */
+main { padding: 16px; max-width: 640px; margin: 0 auto; }
+h2 { font-size: 17px; margin: 4px 0 12px; }
+
+/* --- Карточки/списки --- */
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(20,30,60,.06);
+}
+.op { display: flex; align-items: center; gap: 12px; }
+.op .icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: grid; place-items: center; font-size: 20px; flex: none;
+}
+.op .info { flex: 1; min-width: 0; }
+.op .info .cat { font-weight: 600; }
+.op .info .note { color: var(--muted); font-size: 13px; }
+.op .amt { font-weight: 700; white-space: nowrap; }
+.op .amt.inc { color: var(--income); }
+.op .amt.exp { color: var(--expense); }
+.op .del { background: none; border: none; color: var(--muted); font-size: 18px; padding: 4px; cursor: pointer; }
+.empty { color: var(--muted); text-align: center; margin: 30px 0; }
+
+/* --- Кнопка добавления (плавающая) --- */
+.fab {
+  position: fixed; right: 20px; bottom: 90px;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: var(--brand); color: #fff; border: none;
+  font-size: 30px; line-height: 1;
+  box-shadow: 0 6px 18px rgba(45,108,223,.45);
+  cursor: pointer; z-index: 20;
+}
+
+/* --- Нижнее меню --- */
+nav.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-around;
+  padding: 8px 0 12px; z-index: 15;
+}
+nav.tabbar button {
+  background: none; border: none; color: var(--muted);
+  font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  cursor: pointer; flex: 1;
+}
+nav.tabbar button .ic { font-size: 20px; }
+nav.tabbar button.active { color: var(--brand); }
+
+/* --- Нижняя шторка (ввод) --- */
+.sheet-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,.4);
+  display: flex; align-items: flex-end; z-index: 30;
+}
+.sheet {
+  background: #fff; width: 100%; border-radius: 18px 18px 0 0;
+  padding: 16px 16px 24px; max-height: 88vh; overflow-y: auto;
+  max-width: 640px; margin: 0 auto;
+}
+.sheet h3 { margin: 4px 0 14px; text-align: center; }
+.seg { display: flex; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 14px; }
+.seg button {
+  flex: 1; border: none; background: none; padding: 10px; border-radius: 9px;
+  font-weight: 600; color: var(--muted); cursor: pointer;
+}
+.seg button.on-exp { background: var(--expense); color: #fff; }
+.seg button.on-inc { background: var(--income); color: #fff; }
+.amount-input {
+  width: 100%; text-align: center; font-size: 34px; font-weight: 700;
+  border: none; border-bottom: 2px solid var(--line); padding: 8px; margin-bottom: 16px;
+  outline: none;
+}
+.cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+.cat-btn {
+  border: 2px solid transparent; background: var(--bg); border-radius: 12px;
+  padding: 10px 4px; text-align: center; cursor: pointer; font-size: 11px; color: var(--text);
+}
+.cat-btn .e { font-size: 22px; display: block; margin-bottom: 3px; }
+.cat-btn.sel { border-color: var(--brand); background: #eaf1fe; }
+.field { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 15px; margin-bottom: 14px; }
+.btn-primary {
+  width: 100%; background: var(--brand); color: #fff; border: none;
+  padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;
+}
+.btn-ghost {
+  width: 100%; background: none; color: var(--muted); border: none;
+  padding: 12px; font-size: 14px; cursor: pointer; margin-top: 4px;
+}
+
+/* --- Отчёт: диаграмма --- */
+.chart-wrap { display: flex; justify-content: center; margin: 10px 0 18px; }
+.legend-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.legend-row .dot { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.legend-row .nm { flex: 1; }
+.legend-row .val { font-weight: 600; }
+.bar { height: 6px; background: var(--line); border-radius: 4px; margin-top: 6px; overflow: hidden; }
+.bar > span { display: block; height: 100%; border-radius: 4px; }
+.warn { color: var(--expense); font-size: 12px; margin-top: 4px; }
+
+/* --- Цели --- */
+.goal .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.goal .top .name { font-weight: 600; }
+.goal .top .del { background: none; border: none; color: var(--muted); cursor: pointer; }
+.goal .nums { color: var(--muted); font-size: 13px; margin-top: 6px; display: flex; justify-content: space-between; }
+.goal .add { margin-top: 10px; background: #eaf1fe; color: var(--brand); border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+/* --- Настройки --- */
+.set-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.set-row:last-child { border-bottom: none; }
+.danger { color: var(--expense); }

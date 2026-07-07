@@ -48,16 +48,24 @@ const cur = () => state.settings.currency;
 function money(n) {
   return n.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' ' + cur();
 }
-function uid() { return Date.now().toString(36) + Math.floor(performance.now() % 1000); }
+function uid() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return Date.now().toString(36) + Math.floor(Math.random() * 1e9).toString(36);
+}
+// Экранирование пользовательского ввода перед вставкой в HTML
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 function catById(id) {
   return [...state.categories.expense, ...state.categories.income].find(c => c.id === id)
     || { name: 'Без категории', emoji: '❔', color: '#8a90a2' };
 }
-function ymNow() {
-  const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+// «Текущий месяц» считаем по локальному времени, чтобы операции не уезжали в соседний месяц
+function isThisMonth(iso) {
+  const d = new Date(iso), now = new Date();
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
 }
-function isThisMonth(iso) { return iso.slice(0, 7) === ymNow(); }
 function dateLabel(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
@@ -93,7 +101,7 @@ function render() {
       </div>
     </header>
     <main id="screen"></main>
-    <button class="fab" id="fab">+</button>
+    ${tab === 'settings' ? '' : '<button class="fab" id="fab">+</button>'}
     <nav class="tabbar">
       ${TABS.map(x => `<button data-tab="${x.id}" class="${tab === x.id ? 'active' : ''}">
         <span class="ic">${x.ic}</span>${x.label}</button>`).join('')}
@@ -107,7 +115,7 @@ function render() {
   else if (tab === 'goals') renderGoals(scr);
   else if (tab === 'settings') renderSettings(scr);
 
-  $('#fab').onclick = openAddSheet;
+  const fab = $('#fab'); if (fab) fab.onclick = openAddSheet;
   document.querySelectorAll('nav.tabbar button').forEach(b => {
     b.onclick = () => { tab = b.dataset.tab; render(); };
   });
@@ -126,8 +134,8 @@ function renderHome(scr) {
     return `<div class="card op">
       <div class="icon" style="background:${c.color}22;color:${c.color}">${c.emoji}</div>
       <div class="info">
-        <div class="cat">${c.name}</div>
-        <div class="note">${t.note ? t.note + ' · ' : ''}${dateLabel(t.date)}</div>
+        <div class="cat">${escapeHtml(c.name)}</div>
+        <div class="note">${t.note ? escapeHtml(t.note) + ' · ' : ''}${dateLabel(t.date)}</div>
       </div>
       <div class="amt ${t.type === 'income' ? 'inc' : 'exp'}">${sign}${money(t.amount)}</div>
       <button class="del" data-del="${t.id}">✕</button>
@@ -171,7 +179,7 @@ function renderReport(scr) {
         }
         return `<div class="legend-row">
             <span class="dot" style="background:${r.color}"></span>
-            <span class="nm">${r.emoji} ${r.name}</span>
+            <span class="nm">${r.emoji} ${escapeHtml(r.name)}</span>
             <span class="val">${money(r.sum)} · ${pct}%</span>
           </div>${bar}`;
       }).join('')}
@@ -185,14 +193,19 @@ function donut(rows, total) {
   const R = 70, r = 45, cx = 80, cy = 80;
   let a0 = -Math.PI / 2;
   let paths = '';
-  for (const row of rows) {
-    const frac = row.sum / total;
-    const a1 = a0 + frac * Math.PI * 2;
-    const large = frac > 0.5 ? 1 : 0;
-    const x0 = cx + R * Math.cos(a0), y0 = cy + R * Math.sin(a0);
-    const x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
-    paths += `<path d="M ${x0} ${y0} A ${R} ${R} 0 ${large} 1 ${x1} ${y1} L ${cx} ${cy} Z" fill="${row.color}"/>`;
-    a0 = a1;
+  if (rows.length === 1) {
+    // одна категория — рисуем полный круг (дуга на 360° вырождается и не видна)
+    paths = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="${rows[0].color}"/>`;
+  } else {
+    for (const row of rows) {
+      const frac = row.sum / total;
+      const a1 = a0 + frac * Math.PI * 2;
+      const large = frac > 0.5 ? 1 : 0;
+      const x0 = cx + R * Math.cos(a0), y0 = cy + R * Math.sin(a0);
+      const x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
+      paths += `<path d="M ${x0} ${y0} A ${R} ${R} 0 ${large} 1 ${x1} ${y1} L ${cx} ${cy} Z" fill="${row.color}"/>`;
+      a0 = a1;
+    }
   }
   return `<svg width="160" height="160" viewBox="0 0 160 160">
     ${paths}<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff"/>
@@ -208,7 +221,7 @@ function renderGoals(scr) {
     state.goals.map(g => {
       const pct = g.target > 0 ? Math.min(100, Math.round(g.saved / g.target * 100)) : 0;
       return `<div class="card goal">
-        <div class="top"><span class="name">🎯 ${g.name}</span>
+        <div class="top"><span class="name">🎯 ${escapeHtml(g.name)}</span>
           <button class="del" data-delgoal="${g.id}">✕</button></div>
         <div class="bar"><span style="width:${pct}%;background:var(--income)"></span></div>
         <div class="nums"><span>${money(g.saved)}</span><span>${pct}% из ${money(g.target)}</span></div>
@@ -220,16 +233,18 @@ function renderGoals(scr) {
   $('#newGoal').onclick = () => {
     const name = prompt('Название цели (например: Отпуск):');
     if (!name) return;
-    const target = parseFloat((prompt('Сколько накопить?') || '').replace(',', '.'));
+    let target = parseFloat((prompt('Сколько накопить?') || '').replace(',', '.'));
     if (!target || target <= 0) return;
+    target = Math.round(target * 100) / 100;
     state.goals.push({ id: uid(), name: name.trim(), target, saved: 0 });
     save(); render();
   };
   scr.querySelectorAll('[data-addgoal]').forEach(b => b.onclick = () => {
     const g = state.goals.find(x => x.id === b.dataset.addgoal);
-    const add = parseFloat((prompt('Сколько добавить?') || '').replace(',', '.'));
+    let add = parseFloat((prompt('Сколько добавить?') || '').replace(',', '.'));
     if (!add || add <= 0) return;
-    g.saved += add; save(); render();
+    add = Math.round(add * 100) / 100;
+    g.saved = Math.round((g.saved + add) * 100) / 100; save(); render();
   });
   scr.querySelectorAll('[data-delgoal]').forEach(b => b.onclick = () => {
     state.goals = state.goals.filter(x => x.id !== b.dataset.delgoal);
@@ -302,8 +317,9 @@ function openAddSheet() {
   bg.onclick = (e) => { if (e.target === bg) close(); };
   $('#closeOp').onclick = close;
   $('#saveOp').onclick = () => {
-    const amount = parseFloat(($('#amt').value || '').replace(',', '.'));
+    let amount = parseFloat(($('#amt').value || '').replace(',', '.'));
     if (!amount || amount <= 0) { $('#amt').focus(); return; }
+    amount = Math.round(amount * 100) / 100;
     if (!draft.catId) { alert('Выбери категорию'); return; }
     state.transactions.push({
       id: uid(), type: draft.type, amount,

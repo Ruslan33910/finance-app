@@ -1,6 +1,8 @@
 // Service worker — кэширует файлы, чтобы приложение работало офлайн.
-const CACHE = 'finance-v1';
+// Версию кэша меняем при каждом релизе, чтобы обновления доезжали до пользователей.
+const CACHE = 'finance-v2';
 const ASSETS = [
+  './',
   'index.html',
   'style.css',
   'app.js',
@@ -15,11 +17,26 @@ self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
 
-// При запросе — сначала пробуем кэш, потом сеть
+// Стратегия «stale-while-revalidate»: отдаём из кэша сразу (быстро и работает офлайн),
+// а в фоне тянем свежую версию и обновляем кэш к следующему открытию.
 self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((hit) => hit || fetch(e.request))
-  );
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  e.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    const cached = await cache.match(req);
+    const network = fetch(req).then((res) => {
+      if (res && res.status === 200 && res.type === 'basic') cache.put(req, res.clone());
+      return res;
+    }).catch(() => null);
+    const result = cached || await network;
+    if (result) return result;
+    // Офлайн и файла нет в кэше: для навигации отдаём главную страницу приложения
+    if (req.mode === 'navigate') {
+      return (await cache.match('index.html')) || Response.error();
+    }
+    return Response.error();
+  })());
 });
 
 // Чистим старые версии кэша при обновлении

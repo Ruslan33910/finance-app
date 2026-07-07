@@ -1,14 +1,17 @@
-/* --- Базовые стили, мобильный вид --- */
+/* --- Базовые стили, мобильный вид. Тёмно-зелёная с золотом гамма --- */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 :root {
-  --bg: #f4f6fb;
-  --card: #ffffff;
-  --text: #1a1f36;
-  --muted: #8a90a2;
-  --brand: #2d6cdf;
-  --income: #23a06b;
-  --expense: #e5484d;
-  --line: #eaecf2;
+  --bg: #0a1e15;
+  --surface: #12362a;      /* мелкие фоны: сегменты, кнопки категорий, поля */
+  --card: #123026;         /* карточки */
+  --card-border: rgba(201,162,75,.16);
+  --text: #f2ead7;         /* кремовый */
+  --muted: #9aac9f;        /* приглушённый сдержанный */
+  --gold: #c9a24b;
+  --gold-soft: #e3c986;
+  --income: #4cc08b;
+  --expense: #e57470;
+  --line: rgba(201,162,75,.14);
 }
 html, body { margin: 0; height: 100%; }
 body {
@@ -18,33 +21,36 @@ body {
   padding-bottom: 76px; /* место под нижнее меню */
 }
 .hidden { display: none !important; }
+::placeholder { color: var(--muted); opacity: .8; }
 
 /* --- Шапка --- */
 header {
-  background: var(--brand);
-  color: #fff;
+  background: linear-gradient(160deg, #1c5741 0%, #123a2b 60%, #0e2c20 100%);
+  color: var(--text);
   padding: 18px 18px 22px;
+  border-bottom: 1px solid var(--line);
 }
-header .title { font-size: 15px; opacity: .85; }
-header .balance { font-size: 32px; font-weight: 700; margin-top: 2px; }
+header .title { font-size: 15px; color: var(--gold-soft); opacity: .9; }
+header .balance { font-size: 32px; font-weight: 700; margin-top: 2px; color: var(--gold-soft); }
 header .sub {
-  display: flex; gap: 16px; margin-top: 12px; font-size: 13px;
+  display: flex; gap: 16px; margin-top: 12px; font-size: 13px; color: #cdd7cb;
 }
 header .sub b { display: block; font-size: 16px; }
-header .sub .inc { color: #b8f0d6; }
-header .sub .exp { color: #ffc9cb; }
+header .sub .inc { color: #a7e6c8; }
+header .sub .exp { color: #f0b6b4; }
 
 /* --- Контент --- */
 main { padding: 16px; max-width: 640px; margin: 0 auto; }
-h2 { font-size: 17px; margin: 4px 0 12px; }
+h2 { font-size: 17px; margin: 4px 0 12px; color: var(--gold-soft); font-weight: 600; }
 
 /* --- Карточки/списки --- */
 .card {
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(20,30,60,.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
 }
 .op { display: flex; align-items: center; gap: 12px; }
 .op .icon {
@@ -64,16 +70,17 @@ h2 { font-size: 17px; margin: 4px 0 12px; }
 .fab {
   position: fixed; right: 20px; bottom: 90px;
   width: 58px; height: 58px; border-radius: 50%;
-  background: var(--brand); color: #fff; border: none;
+  background: linear-gradient(160deg, var(--gold-soft), var(--gold));
+  color: #10281d; border: none;
   font-size: 30px; line-height: 1;
-  box-shadow: 0 6px 18px rgba(45,108,223,.45);
+  box-shadow: 0 6px 20px rgba(201,162,75,.4);
   cursor: pointer; z-index: 20;
 }
 
 /* --- Нижнее меню --- */
 nav.tabbar {
   position: fixed; bottom: 0; left: 0; right: 0;
-  background: #fff; border-top: 1px solid var(--line);
+  background: #0c2419; border-top: 1px solid var(--line);
   display: flex; justify-content: space-around;
   padding: 8px 0 12px; z-index: 15;
 }
@@ -83,42 +90,49 @@ nav.tabbar button {
   cursor: pointer; flex: 1;
 }
 nav.tabbar button .ic { font-size: 20px; }
-nav.tabbar button.active { color: var(--brand); }
+nav.tabbar button.active { color: var(--gold-soft); }
 
 /* --- Нижняя шторка (ввод) --- */
 .sheet-bg {
-  position: fixed; inset: 0; background: rgba(0,0,0,.4);
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
   display: flex; align-items: flex-end; z-index: 30;
 }
 .sheet {
-  background: #fff; width: 100%; border-radius: 18px 18px 0 0;
+  background: #102a20; color: var(--text);
+  width: 100%; border-radius: 18px 18px 0 0;
   padding: 16px 16px 24px; max-height: 88vh; overflow-y: auto;
   max-width: 640px; margin: 0 auto;
+  border-top: 1px solid var(--line);
 }
-.sheet h3 { margin: 4px 0 14px; text-align: center; }
-.seg { display: flex; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 14px; }
+.sheet h3 { margin: 4px 0 14px; text-align: center; color: var(--gold-soft); }
+.seg { display: flex; background: var(--surface); border-radius: 12px; padding: 4px; margin-bottom: 14px; }
 .seg button {
   flex: 1; border: none; background: none; padding: 10px; border-radius: 9px;
   font-weight: 600; color: var(--muted); cursor: pointer;
 }
-.seg button.on-exp { background: var(--expense); color: #fff; }
-.seg button.on-inc { background: var(--income); color: #fff; }
+.seg button.on-exp { background: var(--expense); color: #2a0f0f; }
+.seg button.on-inc { background: var(--income); color: #08281a; }
 .amount-input {
   width: 100%; text-align: center; font-size: 34px; font-weight: 700;
   border: none; border-bottom: 2px solid var(--line); padding: 8px; margin-bottom: 16px;
-  outline: none;
+  outline: none; background: transparent; color: var(--gold-soft);
 }
 .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
 .cat-btn {
-  border: 2px solid transparent; background: var(--bg); border-radius: 12px;
+  border: 2px solid transparent; background: var(--surface); border-radius: 12px;
   padding: 10px 4px; text-align: center; cursor: pointer; font-size: 11px; color: var(--text);
 }
 .cat-btn .e { font-size: 22px; display: block; margin-bottom: 3px; }
-.cat-btn.sel { border-color: var(--brand); background: #eaf1fe; }
-.field { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 15px; margin-bottom: 14px; }
+.cat-btn.sel { border-color: var(--gold); background: rgba(201,162,75,.16); }
+.field {
+  width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px;
+  font-size: 15px; margin-bottom: 14px; background: var(--surface); color: var(--text);
+}
 .btn-primary {
-  width: 100%; background: var(--brand); color: #fff; border: none;
-  padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;
+  width: 100%; border: none;
+  background: linear-gradient(160deg, var(--gold-soft), var(--gold));
+  color: #10281d;
+  padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer;
 }
 .btn-ghost {
   width: 100%; background: none; color: var(--muted); border: none;
@@ -131,7 +145,7 @@ nav.tabbar button.active { color: var(--brand); }
 .legend-row .dot { width: 12px; height: 12px; border-radius: 3px; flex: none; }
 .legend-row .nm { flex: 1; }
 .legend-row .val { font-weight: 600; }
-.bar { height: 6px; background: var(--line); border-radius: 4px; margin-top: 6px; overflow: hidden; }
+.bar { height: 6px; background: rgba(255,255,255,.1); border-radius: 4px; margin-top: 6px; overflow: hidden; }
 .bar > span { display: block; height: 100%; border-radius: 4px; }
 .warn { color: var(--expense); font-size: 12px; margin-top: 4px; }
 
@@ -140,7 +154,7 @@ nav.tabbar button.active { color: var(--brand); }
 .goal .top .name { font-weight: 600; }
 .goal .top .del { background: none; border: none; color: var(--muted); cursor: pointer; }
 .goal .nums { color: var(--muted); font-size: 13px; margin-top: 6px; display: flex; justify-content: space-between; }
-.goal .add { margin-top: 10px; background: #eaf1fe; color: var(--brand); border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+.goal .add { margin-top: 10px; background: rgba(201,162,75,.16); color: var(--gold-soft); border: none; padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer; }
 
 /* --- Настройки --- */
 .set-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line); }

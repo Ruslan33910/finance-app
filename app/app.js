@@ -208,9 +208,9 @@ function donut(rows, total) {
     }
   }
   return `<svg width="160" height="160" viewBox="0 0 160 160">
-    ${paths}<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff"/>
-    <text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="11" fill="#8a90a2">Всего</text>
-    <text x="${cx}" y="${cy + 12}" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1f36">${total.toLocaleString('ru-RU')}</text>
+    ${paths}<circle cx="${cx}" cy="${cy}" r="${r}" fill="#123026"/>
+    <text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="11" fill="#9aac9f">Всего</text>
+    <text x="${cx}" y="${cy + 12}" text-anchor="middle" font-size="14" font-weight="700" fill="#e3c986">${total.toLocaleString('ru-RU')}</text>
   </svg>`;
 }
 

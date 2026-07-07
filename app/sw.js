@@ -1,6 +1,6 @@
 // Service worker — кэширует файлы, чтобы приложение работало офлайн.
 // Версию кэша меняем при каждом релизе, чтобы обновления доезжали до пользователей.
-const CACHE = 'finance-v2';
+const CACHE = 'finance-v3';
 const ASSETS = [
   './',
   'index.html',

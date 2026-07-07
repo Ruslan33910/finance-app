@@ -3,45 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2d6cdf">
+  <meta name="theme-color" content="#0d241a">
   <title>Мои финансы — учёт денег без лишнего</title>
   <link rel="icon" href="app/icons/icon-192.png">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --green-1: #12362a;
+      --green-2: #0a1d15;
+      --gold: #c9a24b;
+      --gold-soft: #e3c986;
+      --cream: #f3ead6;
+    }
     body {
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: linear-gradient(160deg, #2d6cdf 0%, #1e4fa8 100%);
-      color: #fff; min-height: 100vh;
+      background: radial-gradient(120% 90% at 50% 0%, #184433 0%, var(--green-1) 45%, var(--green-2) 100%);
+      color: var(--cream); min-height: 100vh;
       display: flex; flex-direction: column; align-items: center;
-      padding: 40px 20px;
+      padding: 44px 20px;
     }
     .wrap { max-width: 460px; width: 100%; text-align: center; }
     .logo {
       width: 88px; height: 88px; border-radius: 22px;
-      background: rgba(255,255,255,.15); display: grid; place-items: center;
-      font-size: 46px; margin: 0 auto 22px; backdrop-filter: blur(4px);
+      background: linear-gradient(160deg, rgba(201,162,75,.22), rgba(201,162,75,.06));
+      border: 1px solid rgba(201,162,75,.5);
+      display: grid; place-items: center;
+      font-size: 46px; color: var(--gold-soft); margin: 0 auto 22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.35);
     }
-    h1 { font-size: 28px; margin-bottom: 10px; }
-    .lead { font-size: 16px; opacity: .9; line-height: 1.5; margin-bottom: 26px; }
+    h1 {
+      font-size: 28px; margin-bottom: 10px; letter-spacing: .3px;
+      color: var(--gold-soft);
+    }
+    .lead { font-size: 16px; color: #d8e0d5; opacity: .92; line-height: 1.55; margin-bottom: 28px; }
     .btn {
-      display: block; width: 100%; background: #fff; color: #2d6cdf;
-      text-decoration: none; padding: 16px; border-radius: 14px;
-      font-size: 17px; font-weight: 700; margin-bottom: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      display: block; width: 100%; text-decoration: none;
+      padding: 16px; border-radius: 14px; font-size: 17px; font-weight: 700;
+      margin-bottom: 12px; letter-spacing: .2px;
     }
-    .btn.secondary { background: rgba(255,255,255,.15); color: #fff; box-shadow: none; }
+    .btn.primary {
+      background: linear-gradient(160deg, var(--gold-soft), var(--gold));
+      color: #10281d;
+      box-shadow: 0 8px 26px rgba(201,162,75,.28);
+    }
+    .btn.secondary {
+      background: transparent; color: var(--gold-soft);
+      border: 1px solid rgba(201,162,75,.55);
+    }
     .features {
-      background: rgba(255,255,255,.1); border-radius: 16px;
-      padding: 20px; margin: 28px 0; text-align: left;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(201,162,75,.18);
+      border-radius: 16px; padding: 20px; margin: 30px 0; text-align: left;
     }
-    .features li { list-style: none; padding: 8px 0; display: flex; gap: 12px; align-items: center; font-size: 15px; }
+    .features li {
+      list-style: none; padding: 9px 0; display: flex; gap: 12px; align-items: center;
+      font-size: 15px; color: #e7ecdf;
+    }
+    .features li + li { border-top: 1px solid rgba(201,162,75,.1); }
     .features li .e { font-size: 20px; }
     .how {
-      background: rgba(0,0,0,.12); border-radius: 16px; padding: 18px 20px; text-align: left;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(201,162,75,.14);
+      border-radius: 16px; padding: 18px 20px; text-align: left;
     }
-    .how h3 { font-size: 15px; margin-bottom: 10px; }
-    .how p { font-size: 14px; opacity: .92; line-height: 1.5; margin-bottom: 6px; }
-    .note { font-size: 12px; opacity: .7; margin-top: 22px; line-height: 1.5; }
+    .how h3 { font-size: 15px; margin-bottom: 10px; color: var(--gold-soft); }
+    .how p { font-size: 14px; color: #d6ddd0; line-height: 1.5; margin-bottom: 6px; }
+    .how b { color: var(--cream); }
+    .note { font-size: 12px; color: #a9b6a5; opacity: .85; margin-top: 24px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -50,7 +78,7 @@
     <h1>Мои финансы</h1>
     <p class="lead">Простой учёт доходов и расходов. Категории, лимиты, цели и наглядные отчёты. Работает без интернета, данные — только на вашем телефоне.</p>
 
-    <a class="btn" href="app/index.html">Открыть приложение</a>
+    <a class="btn primary" href="app/index.html">Открыть приложение</a>
     <a class="btn secondary" href="app/index.html">Установить на телефон</a>
 
     <ul class="features">
